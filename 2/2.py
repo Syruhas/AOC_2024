@@ -30,11 +30,9 @@ def is_safe_row(row:list[int]):
             m = diff
         
         if M*m<=0 or M>3 or m<-3:
-            print(m, M, diff)
             return (0,k)
     
     return (1,0)
-    return (not m < 0 < M) and (abs(m)<=3) and (abs(M)<=3) and not(0 in consecutive_diff)
 
 
 def compute_numberofsaferows_2(row_list: list[list[int]]):

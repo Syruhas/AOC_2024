@@ -48,7 +48,7 @@ def find_xmas(line:int, pos:int, mat: list[list[str]], n_line:int, n_char:int):
     return count
     
 
-def part_one():
+def part_two():
     with open("input.txt", "r") as f:
         mat = f.readlines()
         n_line = len(mat)
@@ -57,14 +57,18 @@ def part_one():
 
         for line in range(1,n_line-1):
             for pos in range(1,n_char-1):
-                if mat[line][pos]=="X":
-                    tot += find_xmas(line, pos, mat, n_line, n_char)
-        
+                if mat[line][pos]=="A":
+                    tot += find_xmas2(line, pos, mat, n_line, n_char)
         print(tot)
     
-def x_mas_2():
-    
-    
+def find_xmas2(line, pos, mat, n_line, n_char):
+
+    diag1 = "".join([mat[line-1+i][pos-1+i] for i in range(3)])
+    diag2 = "".join([mat[line+1-i][pos-1+i] for i in range(3)])
+
+    if( (diag1=="MAS" or diag1=="SAM") and (diag2=="MAS" or diag2=="SAM")):
+        return 1
+    return 0
 
 if __name__=="__main__":
-    part_one()
+    part_two()

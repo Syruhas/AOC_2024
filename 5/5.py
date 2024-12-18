@@ -34,5 +34,48 @@ def one():
 
     return sum
 
+def fix_page(rules_as_dic, page):
+    ordered_page = []
+    visited = set()
+    in_stack = set()
+    
+    def visit(node):
+        if node in visited:
+            return
+        if node in in_stack:
+            raise ValueError(f"Cyclic dependency detected involving {node}")
+        
+        in_stack.add(node)
+        for dependent in rules_as_dic.get(node, []):
+            if dependent in page:
+                visit(dependent)
+        in_stack.remove(node)
+        visited.add(node)
+        ordered_page.append(node)
+    
+    for p in page:
+        if p not in visited:
+            visit(p)
+    
+    # Reverse needed
+    ordered_page.reverse()
+    return ordered_page
+
+def two():
+    sum = 0
+    rules_as_dic, pages = parse_file("input.txt")
+    
+    for page in pages:
+        if not check_page(rules_as_dic, page):
+            try:
+                new_page = fix_page(rules_as_dic, page)
+                if(not check_page(rules_as_dic, new_page)):
+                    print("FDP")
+                sum += new_page[len(new_page) // 2]
+            except ValueError as e:
+                print(f"Error fixing page {page}: {e}")
+
+    return sum
+
 if __name__=="__main__":
-    print(one())
+    print(two())
